@@ -1,0 +1,110 @@
+*{
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.top-box{
+    margin-top: 1em;
+    display: flex;
+    justify-content: center;
+}
+
+.top-box svg{
+    width: 430px;
+}
+
+.top-menu{
+    margin-top: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-top: 1px solid rgb(147, 147, 147);
+    border-bottom: 4px double black;
+}
+
+.top-menu button{
+    border: none;
+    background: none;
+    margin: 5px;
+}
+
+.top-menu button:hover{
+    background-color: antiquewhite;
+}
+
+.news-img-size{
+    max-width: 100%;
+    max-height: 250px;
+}
+
+.news-box{
+    border-bottom: 2px solid black;
+}
+
+.side-menu{
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: burlywood;
+    transition: 0.5s;
+    padding-top: 60px;
+    overflow-x: hidden;
+}
+
+.side-menu-list button{
+    margin: 5px;
+    border: none;
+    background: none;
+    width: 120px;
+    transition: 0.4s;
+}
+
+.side-menu .close{
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    border: none;
+    background: none;
+}
+
+.side-menu-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.side-menu-list button:hover{
+    background-color: rgb(242, 223, 204);
+    border-radius: 3px;
+}
+
+.hide{
+    display: none;
+}
+
+#input-area{
+    display: none;
+}
+
+/* 반응형 */
+@media screen and (max-width: 63rem) {
+    .hide {
+      display: inline;
+    }
+
+    .top-menu{
+        display: none;
+    }
+
+}
