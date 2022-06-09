@@ -3,7 +3,7 @@ let news = []
 
 const getNews = async() =>{  // 구버전 => async function getNews(){}
 
-    let url = new URL (`https://api.newscatcherapi.com/v2/latest_headlines?countries=kr&topic=business&page_size=2`);  // url 준비
+    let url = new URL (`https://api.newscatcherapi.com/v2/latest_headlines?countries=kr&topic=business&page_size=5`);  // url 준비
     console.log(url);
 
     let header = new Headers ({'x-api-key':'R1heuvDct2FFyYoOGIVKQpEiiLP2bTtU_Ts6Nujq2jo'}) // 해더 준비
@@ -14,11 +14,63 @@ const getNews = async() =>{  // 구버전 => async function getNews(){}
     
     news = data.articles
     console.log(news);
+
+    render();
 }; 
 
 getNews();
 
 
 
+const openA = () =>{
+    document.getElementById("mySide").style.width="250px";
+  };
 
+  const closeA = () =>{
+    document.getElementById("mySide").style.width="0";
+  };
+
+  const searchBox = () =>{
+
+    let inputArea = document.getElementById("input-area");
+    if(inputArea.style.display === "inline"){
+      inputArea.style.display = "none";      
+    }else{
+      inputArea.style.display = "inline";
+    }
+    
+  };
+
+
+
+
+const render = () =>{ 
+
+    let resultHTML = '';
+
+    for(let i=0; i<news.length; i++){ 
+        
+    resultHTML += 
+    
+    `<div class="row news-box" id="news-List">
+
+        <div class="col-lg-4">
+            <img class="news-img-size" src="${news[i].media}"/>
+        </div>
+    
+        <div class="col-lg-8">
+            <h3>${news[i].title}</h3>
+            <p>${news[i].summary}</p>
+            <div>${news[i].published_date}</div>
+        </div>
+      
+    </div>`;
+
+    };
+
+    document.getElementById("news-List").innerHTML = resultHTML;
+    console.log(resultHTML);       
+}
+
+        
 

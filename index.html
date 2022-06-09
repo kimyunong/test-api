@@ -50,6 +50,7 @@
             <button class="search-button" onclick="searchNews()">Go</button> 
           </span>
         </div>
+        <!--mobile-->
 
         <div class="top-box">
           <svg viewBox="0 0 184 25" fill="#000">
@@ -75,7 +76,7 @@
             <button>Food</button>
             <button>Science</button>
             <button>Gaming</button>
-            <button>Energy</button> 
+            <button>Energy</button>
         </div>
         <!--top-menu-->
 
@@ -84,7 +85,7 @@
 
       <section>
 
-          <div class="row news-box">
+          <div class="row news-box" id="news-List">
 
               <div class="col-lg-4">
                   <img class="news-img-size" src="https://st4.depositphotos.com/1025323/21749/i/600/depositphotos_217490400-stock-photo-mind-fog-series-rendering-made.jpg">
@@ -113,27 +114,3 @@
     <script src="main.js"></script>
   </body>
 </html>
-
-
-<script>
-
-  const openA = () =>{
-    document.getElementById("mySide").style.width="250px";
-  };
-
-  const closeA = () =>{
-    document.getElementById("mySide").style.width="0";
-  };
-
-  const searchBox = () =>{
-
-    let inputArea = document.getElementById("input-area");
-    if(inputArea.style.display === "inline"){
-      inputArea.style.display = "none";      
-    }else{
-      inputArea.style.display = "inline";
-    }
-    
-  };
-
-</script>
