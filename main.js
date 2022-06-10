@@ -48,29 +48,43 @@ const render = () =>{
 
     let resultHTML = '';
 
-    for(let i=0; i<news.length; i++){ 
+    // for(let i=0; i<news.length; i++){ 
         
-    resultHTML += 
+    // resultHTML += 
     
-    `<div class="row news-box" id="news-List">
-
-        <div class="col-lg-4">
-            <img class="news-img-size" src="${news[i].media}"/>
-        </div>
+    // `<div class="row news-box" id="news-List">
     
-        <div class="col-lg-8">
-            <h3>${news[i].title}</h3>
-            <p>${news[i].summary}</p>
-            <div>${news[i].published_date}</div>
-        </div>
+    //     <div class="col-lg-4">
+    //         <img class="news-img-size" src="${news[i].media}"/>
+    //     </div>
+    
+    //     <div class="col-lg-8">
+    //         <h3>${news[i].title}</h3>
+    //         <p>${news[i].summary}</p>
+    //         <div>${news[i].published_date}</div>
+    //     </div>
       
-    </div>`;
+    // </div>`; 
 
-    };
+    // };
 
+    resultHTML = news.map((news) =>{
+
+        return `<div class="row news-box" id="news-List">
+                  <div class="col-lg-4">
+                      <img class="news-img-size" src="${news.media}"/>
+                  </div>
+              
+                  <div class="col-lg-8">
+                      <h3>${news.title}</h3>
+                      <p>${news.summary}</p>
+                      <div>${news.published_date}</div>
+                  </div>          
+                </div>`
+    }).join(''); // .map() 함수는 배열로 나타나기 때문에 끝에 .join('');를 삽입하여 스트링으로 변환해줘야 한다 
+    
     document.getElementById("news-List").innerHTML = resultHTML;
-    console.log(resultHTML);       
+    console.log(resultHTML);
 }
 
-        
 
