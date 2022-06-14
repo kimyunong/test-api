@@ -1,5 +1,5 @@
-let news = []
-
+let news = [];
+let url;
 let searchInput = document.getElementById("search-input");
 let menuButton = document.querySelectorAll(".top-menu button");
 
@@ -17,22 +17,44 @@ console.log(searchButton)
 
 
 
+  // 각 함수에서 필요한 url을 만든다 
+  // api 호출 함수를 부른다
+
+const getAPI = async() => {
+
+  try{
+        let header = new Headers ({'x-api-key':'BdvrUwAIdtFNvsVQNdBDUHaZuvrZBB3eYT2K7UluwnE'}) // 해더 준비
+
+        let response = await fetch(url,{headers:header}); // 백엔드 서버에요청 -> ajax, axiox, fetch
+        let data = await response.json()  // json은 서버통신에서 많이쓰는 데이터 타입
+        console.log("데이터",data); // promise {<pending>} <= 아직 데이터가 도착하지 않음
+        
+        
+        if(response.status == 200){
+              console.log();
+              news = data.articles;
+              render();
+        }else{
+              throw new Error(data.message);
+        }
+  
+  }catch(error){ 
+
+    errorRender(error.message)
+
+  } 
+
+}
+
+
 
 const getNews = async() =>{  // 구버전 => async function getNews(){}
 
-    let url = new URL (`https://api.newscatcherapi.com/v2/latest_headlines?countries=kr&topic=business&page_size=5`);  // url 준비
+    url = new URL (`https://api.newscatcherapi.com/v2/latest_headlines?countries=kr&topic=business&page_size=5`);  // url 준비
     console.log(url);
 
-    let header = new Headers ({'x-api-key':'R1heuvDct2FFyYoOGIVKQpEiiLP2bTtU_Ts6Nujq2jo'}) // 해더 준비
+    getAPI();
 
-    let response = await fetch(url,{headers:header}); // 백엔드 서버에요청 -> ajax, axiox, fetch
-    let data = await response.json()  // json은 서버통신에서 많이쓰는 데이터 타입
-    console.log(data); // promise {<pending>} <= 아직 데이터가 도착하지 않음
-    
-    news = data.articles
-    console.log(news);
-
-    render(); 
 }; 
 
 getNews();
@@ -65,18 +87,12 @@ const openA = () =>{
 
     let topic = event.target.textContent.toLowerCase()  // toLowerCase() -> 텍스트를 소문자로 변환
 
-    let url = new URL (`https://api.newscatcherapi.com/v2/latest_headlines?countries=kr&topic=${topic}&page_size=5`)
+    url = new URL (`https://api.newscatcherapi.com/v2/latest_headlines?countries=kr&topic=${topic}&page_size=5`)
     console.log(url);
 
-    let header = new Headers ({'x-api-key':'R1heuvDct2FFyYoOGIVKQpEiiLP2bTtU_Ts6Nujq2jo'});
+    getAPI();
 
-    let response = await fetch(url,{headers:header});
-    let data = await response.json();
-    console.log(data);
-
-    news=data.articles
-    render();
-  }
+  }  
 
 
 
@@ -84,16 +100,10 @@ const openA = () =>{
     
     let keyword = searchInput.value
     
-    let url = new URL (`https://api.newscatcherapi.com/v2/search?q=${keyword}&page_size=10`);
-    let header = new Headers ({'x-api-key':'R1heuvDct2FFyYoOGIVKQpEiiLP2bTtU_Ts6Nujq2jo'});
+    url = new URL (`https://api.newscatcherapi.com/v2/search?q=${keyword}&page_size=10`);
 
-    let response = await fetch(url,{headers:header});
-    let data = await response.json();
-    console.log(data);
+    getAPI();
 
-    news=data.articles
-    render();
-    
   }
   
   searchButton.addEventListener("click",getNewsByKeyword); // * 함수가 선언 된 후에 함수를 사용해야 함 (코딩 순서) 
@@ -155,4 +165,31 @@ const render = () =>{
     document.getElementById("news-List").innerHTML = resultHTML;
     console.log(resultHTML);
 }
+
+
+
+const errorRender = (message) => {
+
+  let resultHTML = '';
+
+      resultHTML += 
+    
+    `<div class="row news-box" id="news-List">
+    
+        <div class="col-lg-4">
+            <img class="news-img-size" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU"/>
+        </div>
+    
+        <div class="col-lg-8">
+            <h3>ERROR</h3>
+            <div class="alert alert-danger text-center" role="alert">${message}</div>
+        </div>
+      
+    </div>`;
+
+    document.getElementById("news-List").innerHTML = resultHTML;
+
+
+} 
+
 
