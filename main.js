@@ -1,5 +1,9 @@
 let news = [];
 let url;
+let page = 1;
+let total_pages = 0;
+
+
 let searchInput = document.getElementById("search-input");
 let menuButton = document.querySelectorAll(".top-menu button");
 
@@ -17,40 +21,49 @@ console.log(searchButton)
 
 
 
+
+
+
   // 각 함수에서 필요한 url을 만든다 
   // api 호출 함수를 부른다
 
 const getAPI = async() => {
 
   try{
+        
         let header = new Headers ({'x-api-key':'BdvrUwAIdtFNvsVQNdBDUHaZuvrZBB3eYT2K7UluwnE'}) // 해더 준비
-
+        url.searchParams.set('page',page); // url주소뒤에 &page를 더해준다
+        console.log("너 위치는 어디니?",url)
         let response = await fetch(url,{headers:header}); // 백엔드 서버에요청 -> ajax, axiox, fetch
         let data = await response.json()  // json은 서버통신에서 많이쓰는 데이터 타입
-        console.log("데이터",data); // promise {<pending>} <= 아직 데이터가 도착하지 않음
-        
-        
+        // console.log("데이터",data); // promise {<pending>} <= 아직 데이터가 도착하지 않음      
         if(response.status == 200){
-              console.log();
+          if(data.total_hits == 0){
+            throw new Error("페이지를 찾을 수 없습니다.")
+          }
+              console.log("받은데이터는?",data);
               news = data.articles;
+              total_pages = data.total_pages;
+              page = data.page;
               render();
+              pageNation();
         }else{
               throw new Error(data.message);
         }
   
   }catch(error){ 
-
+    console.log("잡힌에러는",error.message)
     errorRender(error.message)
 
   } 
 
-}
+} 
 
 
 
 const getNews = async() =>{  // 구버전 => async function getNews(){}
 
-    url = new URL (`https://api.newscatcherapi.com/v2/latest_headlines?countries=kr&topic=business&page_size=5`);  // url 준비
+    url = new URL (`https://api.newscatcherapi.com/v2/latest_headlines?countries=kr&topic=business&page_size=10`);  // url 준비
     console.log(url);
 
     getAPI();
@@ -87,7 +100,7 @@ const openA = () =>{
 
     let topic = event.target.textContent.toLowerCase()  // toLowerCase() -> 텍스트를 소문자로 변환
 
-    url = new URL (`https://api.newscatcherapi.com/v2/latest_headlines?countries=kr&topic=${topic}&page_size=5`)
+    url = new URL (`https://api.newscatcherapi.com/v2/latest_headlines?countries=kr&topic=${topic}&page_size=10`)
     console.log(url);
 
     getAPI();
@@ -190,6 +203,43 @@ const errorRender = (message) => {
     document.getElementById("news-List").innerHTML = resultHTML;
 
 
-} 
+}
 
+// 페이지 네이션 제작순서 
+// 1. total-page 
+// 2. 현재 page
+// 3. page group
+// 4. last / first 찾아주기
+// 5. 페이즈 프린트
+
+const pageNation = () => {
+
+  let pageNationHTML=``;
+
+  let pageGroup = Math.ceil(page/5);
+
+  let last = pageGroup*5
+
+  let first = last -4
+
+  for(let i=first; i<=last; i++){
+
+    pageNationHTML +=`<li class="page-item ${page==i?"active" : ""} ">
+                        <a class="page-link" href="#" onclick="nextPage(${i})">${i}</a>
+                      </li>`;
+  }
+
+  document.querySelector(".pagination").innerHTML = pageNationHTML;
+  
+};
+
+// 1. 이동하고 싶은 페이지 넘버를 알아야 한다
+// 2. 이동하고 싶은 페이지 넘버를 가지고 api를 다시 호출한다
+let nextPage = (pageNum) =>{
+
+page = pageNum;
+console.log("페이지 넘버 :",pageNum)
+getAPI();
+
+}
 
