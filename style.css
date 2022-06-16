@@ -97,9 +97,13 @@ a{
     display: none;
 }
 
-.pagination li{
+#page-bar{
+    display: flex;
+}
 
-    margin: 10px;
+.pagination li{
+    justify-content: center;
+    margin: 5px;
 
 }
 

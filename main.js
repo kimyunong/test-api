@@ -159,7 +159,6 @@ const render = () =>{
               
                   <div class="col-lg-8">
                       <h3>${n.title}</h3>
-
                       <p>${
                         n.summary == null || n.summary == ""
                         ? "내용없음"
@@ -167,7 +166,6 @@ const render = () =>{
                         ? n.summary.substring(0,200) + "..."
                         : n.summary
                       }</p>
-
                       <div>${n.rights || "no source"} * ${moment(n.published_date).fromNow()}</div>
                   </div>          
                 </div>`
@@ -211,16 +209,44 @@ const errorRender = (message) => {
 // 3. page group
 // 4. last / first 찾아주기
 // 5. 페이즈 프린트
+// 6. total_page 3일경우 3개의 페이지만 피린트 하는법 lats, first
+// 7. << >> 버튼 만들어 주기 ( 맨처음 , 맨끝)
+// 8. 내가 그룹1 일때 << < 버튼이 없다
+// 9. 내가 마지막 그룹일때 > >> 버튼이 없다
 
 const pageNation = () => {
 
   let pageNationHTML=``;
 
   let pageGroup = Math.ceil(page/5);
+  console.log("페이지 그룹",pageGroup);
 
   let last = pageGroup*5
 
   let first = last -4
+
+  if(last > total_pages){
+    last = total_pages;
+  }
+
+
+
+  if(`${page}`== 1){
+
+    pageNationHTML =``;
+
+  }else{
+    pageNationHTML =`<li class="page-item">
+                      <a class="page-link" href="#" aria-label="Previous" onclick="nextPage(${page*0+1})">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li class="page-item">
+                      <a class="page-link" href="#" aria-label="Previous" onclick="nextPage(${page-1})">
+                        <span aria-hidden="true">&lt;</span>
+                      </a>
+                    </li>`;
+  }
 
   for(let i=first; i<=last; i++){
 
@@ -229,6 +255,19 @@ const pageNation = () => {
                       </li>`;
   }
 
+
+  if(last < total_pages){
+        pageNationHTML +=`<li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next" onclick="nextPage(${page+1})">
+                              <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next" onclick="nextPage(${total_pages})">
+                              <span aria-hidden="true">&raquo;</span>
+                            </a>`;
+        pageNationHTML +=``;
+  }
   document.querySelector(".pagination").innerHTML = pageNationHTML;
   
 };
